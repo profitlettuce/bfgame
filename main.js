@@ -25,6 +25,7 @@ img.src = "http://www.shellbacksecurity.com/favicon.ico";
 setInterval(function()
 {
     ctx.clearRect(0,0,canvas.width,canvas.height);
+    
     rect.Draw(ctx);
     rect2.Draw(ctx);
     rect3.Draw(ctx);
