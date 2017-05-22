@@ -6,28 +6,56 @@ canvas.style.width = canvas.width + "px";
 canvas.style.height = canvas.height + "px";
 input.offset = new Vector2(GetLeft(canvas),GetTop(canvas));
 
-var floor = new Rectangle(0, 400, 400, 20);
-floor.color = new Color(0, 0, 0, 1);
+var player = new Player();
 
-var player = new Rectangle(15, 15, 20, 20);
-player.color.r = 128;
-player.color.g = 0;
+var floor = new Array();
+floor.push(new Rectangle(0, 400, 400, 20));
+floor.push(new Rectangle(100, 350, 20, 20));
 
-var gravity = 3;
+for (var i = 0; i < floor.length; i++)
+    floor[i].color = new Color(0, 0, 0, 1);
 
 var Update = setInterval(function()
 {
-    player.y += gravity;
+    player.Update();
 
-    if (floor.Intersects(player))
-        player.y = floor.y - player.height;
+    var collided = false;
+    for (var i = 0; i < floor.length; i++)
+    {
+        if (floor[i].Intersects(player.rect))
+        {
+            player.SetPosition(null, floor[i].y - player.rect.height);
+            player.jumpAvailable = true;
+            collided = true;
+            break;  
+        }
+    }
 
+    if (!collided)
+    {
+        player.jumpAvailable = false;
+    }
+
+    // if (!player.jumping)
+    // {
+
+    // }
+    
+    // if (floor.Intersects(player.rect) && !player.jumping)
+    // {
+    //     player.SetPosition(null, floor.y - player.rect.height);
+    //     player.jumpAvailable = true;
+    // }
+    // else
+    //     player.jumpAvailable = false;
 }, 1);
 
 var Draw = setInterval(function()
 {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    floor.Draw(ctx);
+    for (var i = 0; i < floor.length; i++)
+        floor[i].Draw(ctx);
+
     player.Draw(ctx);
 }, 1);
